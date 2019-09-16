@@ -1,0 +1,20 @@
+[Unit]
+Description=Unicorn service
+After=network.target
+
+[Service]
+Type=forking
+Environment=RAILS_ENV=production
+WorkingDirectory=/apps/awesomeapp/awesomeapp-git
+
+PIDFile=/apps/awesomeapp/awesomeapp-git/tmp/pids/unicorn.pid
+ExecStart=/bin/bash -l -c 'bundle exec unicorn -c config/unicorn.rb -D'
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+KillSignal=SIGQUIT
+Restart=on-failure
+SyslogIdentifier=awesomeapp-unicorn
+
+[Install]
+WantedBy=default.target
+
